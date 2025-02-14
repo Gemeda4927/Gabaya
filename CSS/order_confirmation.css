@@ -1,0 +1,171 @@
+/* General Page Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f3f4f8;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #f5a623, #ff3e00);
+    overflow: hidden;
+}
+
+/* Container for the confirmation details */
+.container {
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 750px;
+    padding: 50px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 1s ease-out;
+}
+
+.container:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Order Confirmation Heading */
+h2 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Order Details */
+p {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    color: #555;
+    line-height: 1.7;
+    font-weight: 500;
+}
+
+h3 {
+    font-size: 1.8rem;
+    margin-top: 30px;
+    color: #e67e22;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Product Details */
+.product-item {
+    font-size: 1.2rem;
+    color: #333;
+    padding: 15px 0;
+    border-bottom: 2px solid #f2f2f2;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    animation: fadeIn 1s ease-out;
+}
+
+.product-item:hover {
+    background-color: #f9f9f9;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+/* Price Formatting */
+.product-price {
+    font-weight: 700;
+    color: #27ae60;
+}
+
+/* Button Styling for Action (e.g., "Go Back" or "Continue Shopping") */
+button {
+    background-color: #ff3e00;
+    color: white;
+    padding: 14px 24px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 40px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #e74c3c;
+    transform: scale(1.05);
+}
+
+button:active {
+    background-color: #c0392b;
+}
+
+/* Footer and Error Messages */
+.error-message {
+    color: #e74c3c;
+    font-size: 1.3rem;
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Footer Styling */
+footer {
+    font-size: 1rem;
+    color: #777;
+    margin-top: 50px;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    .product-item {
+        font-size: 1rem;
+        padding: 10px 0;
+    }
+
+    button {
+        font-size: 1.1rem;
+        width: 100%;
+    }
+}
