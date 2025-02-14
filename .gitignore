@@ -1,0 +1,50 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore Node.js dependencies (if applicable)
+node_modules/
+
+# Ignore environment variables
+.env
+
+# Ignore IDE/editor config files
+.vscode/
+.idea/
+
+# Ignore logs and caches
+logs/
+cache/
+
+# Ignore compiled files
+*.log
+*.tmp
+*.lock
+
+# Ignore XAMPP configuration files
+/xampp/
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore Node.js dependencies (if applicable)
+node_modules/
+
+# Ignore environment variables
+.env
+
+# Ignore IDE/editor config files
+.vscode/
+.idea/
+
+# Ignore logs and caches
+logs/
+cache/
+
+# Ignore compiled files
+*.log
+*.tmp
+*.lock
+
+# Ignore XAMPP configuration files
+/xampp/
