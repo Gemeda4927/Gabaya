@@ -1,55 +1,64 @@
 <?php
 session_start();
-require_once('../Connection/conn.php');  // Your database connection
+require_once('../Connection/conn.php'); // Database connection
 
-
-
-// Check if the cart exists
-if (!isset($_SESSION['cart']) || count($_SESSION['cart']) == 0) {
+// Check if cart exists
+if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
     echo "Your cart is empty.";
     exit;
 }
 
 // Handle POST request from checkout form
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $userId = $_SESSION['id']; // Assuming the user is logged in and you have their ID
-    $shippingAddress = $_POST['shipping_address'];
-    $paymentMethod = $_POST['payment_method'];
+    if (!isset($_SESSION['id'])) {
+        echo "User not logged in.";
+        exit;
+    }
 
-    // Calculate total price from the cart
+    $userId = $_SESSION['id']; // User ID from session
+    $shippingAddress = trim($_POST['shipping_address']);
+    $paymentMethod = trim($_POST['payment_method']);
+
+    // Validate input
+    if (empty($shippingAddress) || empty($paymentMethod)) {
+        echo "All fields are required.";
+        exit;
+    }
+
+    // Calculate total price
     $totalPrice = 0;
     foreach ($_SESSION['cart'] as $productId => $item) {
         $totalPrice += $item['price'] * $item['quantity'];
     }
 
-    // Insert order into orders table
-    $stmt = $pdo->prepare("INSERT INTO orders (user_id, total_price, shipping_address, payment_method, status) VALUES (?, ?, ?, ?, ?)");
-    $stmt->execute([$userId, $totalPrice, $shippingAddress, $paymentMethod, 'pending']);
+    try {
+        $pdo->beginTransaction();
 
-    // Get the order ID of the newly inserted order
-    $orderId = $pdo->lastInsertId();
+        // Insert order into orders table
+        $stmt = $pdo->prepare("INSERT INTO orders (user_id, total_price, shipping_address, payment_method, status) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$userId, $totalPrice, $shippingAddress, $paymentMethod, 'pending']);
+        $orderId = $pdo->lastInsertId();
 
-    // Insert order details (products in the cart) into the order_details table
-    foreach ($_SESSION['cart'] as $productId => $item) {
+        // Insert order details
         $stmt = $pdo->prepare("INSERT INTO order_details (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$orderId, $productId, $item['quantity'], $item['price']]);
+        foreach ($_SESSION['cart'] as $productId => $item) {
+            $stmt->execute([$orderId, $productId, $item['quantity'], $item['price']]);
+        }
+
+        $pdo->commit();
+        unset($_SESSION['cart']); // Clear cart
+        header("Location: ../Admin/order_confirmation.php?order_id=" . $orderId);
+        exit;
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        echo "Order processing failed: " . $e->getMessage();
+        exit;
     }
-
-    // Clear the cart after the order is placed
-    unset($_SESSION['cart']);
-
-    // Redirect to a confirmation page or display order details
-    header("Location: order_confirmation.php?order_id=" . $orderId);
-    exit;
 }
-
 include('../includes/header.php');
 ?>
-    <link rel="stylesheet" href="../css/Checkout.css">
 
-
-
-<!-- Example HTML form for checkout -->
+<link rel="stylesheet" href="../css/Checkout.css">
 <form action="checkout.php" method="POST">
     <label for="shipping_address">Shipping Address</label>
     <textarea name="shipping_address" id="shipping_address" required></textarea>
@@ -63,8 +72,4 @@ include('../includes/header.php');
     
     <button type="submit">Complete Order</button>
 </form>
-
-<?php
-// Include the footer
-include('../includes/footer.php');
-?>
+<?php include('../includes/footer.php'); ?>

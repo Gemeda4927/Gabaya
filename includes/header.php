@@ -143,7 +143,8 @@
                 <a href="../pages/index.php">Home</a>
                 <a href="../pages/product-list..php">Shop</a>
                 <a href="../pages/cart.php">Cart</a>
-                <a href="../pages/login.php">Login</a>
+                <a href="../pages/Login.php">Login</a>
+                <a href="../pages/Login.php">Logout</a>
             </nav>
             <div class="search-bar">
                 <input type="text" placeholder="Search products...">
