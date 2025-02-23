@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = mysqli_real_escape_string($conn, $username);
     $email = mysqli_real_escape_string($conn, $email);
 
-    // Query the database
+    // Query the database to include the role
     $sql = "SELECT * FROM users WHERE username='$username' AND email='$email'";
     $result = $conn->query($sql);
 
@@ -31,12 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Store user information in session variables
         $_SESSION['username'] = $username;
         $_SESSION['id'] = $row['id'];  // Added user id to session
+        $_SESSION['role'] = $row['role']; // Store user role in session
 
-        // Display a success message before redirecting if needed
-        echo "Login successful! Redirecting...";
-
-        // Immediate redirect to the index page
-        header("Location: ../pages/index.php");
+        // Redirect based on user role
+        if ($row['role'] === 'admin') {
+            header("Location: ../Admin/index.php");
+        } else {
+            header("Location: ../pages/index.php");
+        }
         exit(); // Always call exit after redirecting
     } else {
         echo "Invalid credentials. Please try again.";
